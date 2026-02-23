@@ -1,3 +1,4 @@
+version: 2
 project_name: notion
 
 before:
@@ -10,6 +11,8 @@ builds:
     binary: notion
     env:
       - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.version={{.Version}}
     goos:
       - linux
       - darwin
@@ -33,5 +36,6 @@ brews:
     repository:
       owner: inforix
       name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     install: |
       bin.install "notion"

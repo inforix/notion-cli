@@ -32,14 +32,48 @@ export NOTION_TOKEN=YOUR_TOKEN
 
 ```bash
 notion --help
-notion pages export <page_id>
 ```
 
-### Export to Markdown
+### Pages
 
 ```bash
-notion pages export <page_id> --assets=link
+notion pages list --query "project" --all
+notion pages get <page_id>
+notion pages create --body @page.json
+notion pages update <page_id> --body @update.json
+notion pages archive <page_id>
 notion pages export <page_id> --assets=download -o page.md
+```
+
+### Databases
+
+```bash
+notion databases get <db_id>
+notion databases query <db_id> --body @query.json
+notion databases create --body @database.json
+notion databases update <db_id> --body @update.json
+```
+
+### Blocks
+
+```bash
+notion blocks get <block_id>
+notion blocks update <block_id> --body @block.json
+notion blocks children append <block_id> --body @children.json
+```
+
+### Users
+
+```bash
+notion users list
+notion users get <user_id>
+```
+
+### Comments
+
+```bash
+notion comments list --page-id <page_id>
+notion comments create --body @comment.json
 ```
 
 ### Auth
@@ -53,6 +87,13 @@ notion auth set --token YOUR_TOKEN
 
 ```bash
 notion search --body @query.json
+```
+
+### Output & Pagination
+
+```bash
+notion search --body @query.json --all --page-size 100
+notion users list --format '{{json .results}}'
 ```
 
 ## Development

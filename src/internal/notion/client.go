@@ -131,3 +131,17 @@ func (c *Client) PostJSON(ctx context.Context, path string, payload []byte) (map
 
 	return data, resp, nil
 }
+
+func (c *Client) PatchJSON(ctx context.Context, path string, payload []byte) (map[string]any, *http.Response, error) {
+	resp, body, err := c.Do(ctx, http.MethodPatch, path, payload)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	var data map[string]any
+	if err := json.Unmarshal(body, &data); err != nil {
+		return nil, resp, err
+	}
+
+	return data, resp, nil
+}

@@ -1,0 +1,37 @@
+project_name: notion
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: notion
+    main: ./src/cmd/notion
+    binary: notion
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: default
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+
+brews:
+  - name: notion-cli
+    homepage: https://github.com/inforix/notion-cli
+    description: Notion CLI for exporting and managing Notion content
+    repository:
+      owner: inforix
+      name: homebrew-tap
+    install: |
+      bin.install "notion"

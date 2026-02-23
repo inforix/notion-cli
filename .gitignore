@@ -1,0 +1,14 @@
+bin/
+dist/
+
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# OS files
+.DS_Store

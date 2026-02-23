@@ -35,6 +35,26 @@ notion --help
 notion pages export <page_id>
 ```
 
+### Export to Markdown
+
+```bash
+notion pages export <page_id> --assets=link
+notion pages export <page_id> --assets=download -o page.md
+```
+
+### Auth
+
+```bash
+notion auth status
+notion auth set --token YOUR_TOKEN
+```
+
+### Search
+
+```bash
+notion search --body @query.json
+```
+
 ## Development
 
 - Source code lives in `./src/`

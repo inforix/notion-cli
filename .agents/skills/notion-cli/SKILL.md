@@ -30,7 +30,17 @@ notion auth set --token YOUR_TOKEN
 ## Examples
 
 ```
+notion --version
+notion pages list --query "Project"
 notion pages export <page_id>
+notion pages get <page_id>
+notion pages create --body @page.json
+notion pages update <page_id> --body @update.json
+notion pages archive <page_id>
+notion databases query <db_id> --body @query.json
+notion blocks children append <block_id> --body @children.json
+notion users list --all
+notion comments list --page-id <page_id>
 notion search --body @query.json
 ```
 
@@ -38,3 +48,5 @@ notion search --body @query.json
 
 - The CLI uses the Notion API and includes a `Notion-Version` header by default.
 - Use `--notion-version` to override when testing a specific API version.
+- Use `--page-size`, `--cursor`, and `--all` for list pagination.
+- Use `--format` to render Go templates from JSON output.

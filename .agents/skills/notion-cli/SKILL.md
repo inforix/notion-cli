@@ -27,10 +27,79 @@ Optional: store the token with the CLI (if supported):
 notion auth set --token YOUR_TOKEN
 ```
 
+## Commands
+
+### Auth
+
+```
+notion auth set --token YOUR_TOKEN
+notion auth status
+notion auth clear
+```
+
+### Pages
+
+```
+notion pages list --query "Project" --all
+notion pages get <page_id>
+notion pages create --body @page.json
+notion pages update <page_id> --body @update.json
+notion pages archive <page_id>
+notion pages export <page_id> --assets=download -o page.md
+```
+
+### Databases
+
+```
+notion databases get <db_id>
+notion databases query <db_id> --body @query.json
+notion databases create --body @database.json
+notion databases update <db_id> --body @update.json
+```
+
+### Blocks
+
+```
+notion blocks get <block_id>
+notion blocks update <block_id> --body @block.json
+notion blocks children append <block_id> --body @children.json
+```
+
+### Users
+
+```
+notion users list --all
+notion users get <user_id>
+```
+
+### Comments
+
+```
+notion comments list --page-id <page_id>
+notion comments list --block-id <block_id>
+notion comments create --body @comment.json
+```
+
+### Search
+
+```
+notion search --body @query.json
+```
+
 ## Examples
 
 ```
+notion --version
+notion pages list --query "Project"
 notion pages export <page_id>
+notion pages get <page_id>
+notion pages create --body @page.json
+notion pages update <page_id> --body @update.json
+notion pages archive <page_id>
+notion databases query <db_id> --body @query.json
+notion blocks children append <block_id> --body @children.json
+notion users list --all
+notion comments list --page-id <page_id>
 notion search --body @query.json
 ```
 
@@ -38,3 +107,6 @@ notion search --body @query.json
 
 - The CLI uses the Notion API and includes a `Notion-Version` header by default.
 - Use `--notion-version` to override when testing a specific API version.
+- Use `--page-size`, `--cursor`, and `--all` for list pagination.
+- Use `--format` to render Go templates from JSON output.
+- Use `--version` or `-V` to print the CLI version and exit.

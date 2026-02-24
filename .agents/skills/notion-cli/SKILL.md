@@ -101,6 +101,10 @@ notion blocks children append <block_id> --body @children.json
 notion users list --all
 notion comments list --page-id <page_id>
 notion search --body @query.json
+notion files create --body @file-upload.json
+notion files read <file_upload_id>
+notion files list --page-size 100
+notion files read --body @file.json --output ./downloads/
 ```
 
 ## Notes

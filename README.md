@@ -32,6 +32,8 @@ export NOTION_TOKEN=YOUR_TOKEN
 
 ```bash
 notion --help
+notion pages export <page_id>
+notion files --help
 ```
 
 ### Pages
@@ -89,11 +91,27 @@ notion auth set --token YOUR_TOKEN
 notion search --body @query.json
 ```
 
+
 ### Output & Pagination
 
 ```bash
 notion search --body @query.json --all --page-size 100
 notion users list --format '{{json .results}}'
+````
+
+```bash
+# Create a file upload
+notion files create --body @file-upload.json
+
+# Retrieve a file upload
+notion files read <file_upload_id>
+
+# List file uploads
+notion files list --page-size 100
+
+# Download a file from a file object (external or file URL)
+notion files read --body @file.json --output ./downloads/
+
 ```
 
 ## Development

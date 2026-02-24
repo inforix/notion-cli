@@ -774,6 +774,8 @@ func fetchList(root *rootOptions, fetch listFetcher) (map[string]any, *http.Resp
 	}
 
 	return pagination.Combine(allResults), lastResp, nil
+}
+
 func newFilesCommand(root *rootOptions) *cobra.Command {
 	files := &cobra.Command{
 		Use:   "files",

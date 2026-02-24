@@ -50,7 +50,7 @@ func ExportPageToMarkdown(ctx context.Context, client *notion.Client, pageID str
 
 	var b strings.Builder
 	if opts.IncludeFrontmatter {
-		b.WriteString(renderFrontmatter(page, title))
+		b.WriteString(renderFrontmatter(page, title, assetHelper))
 		b.WriteString("\n")
 	}
 	if opts.IncludeTitle && title != "" {
@@ -72,11 +72,12 @@ func defaultAssetRoot(outputPath, pageID string) string {
 	return filepath.Join(base, "assets", pageID)
 }
 
-func renderFrontmatter(page map[string]any, title string) string {
+func renderFrontmatter(page map[string]any, title string, assetHelper *assets.Helper) string {
 	id := stringValue(page, "id")
 	url := stringValue(page, "url")
 	created := stringValue(page, "created_time")
 	edited := stringValue(page, "last_edited_time")
+	coverURL, coverType, coverExpiry := extractCover(page, assetHelper)
 
 	properties, _ := json.MarshalIndent(page["properties"], "", "  ")
 
@@ -88,6 +89,21 @@ func renderFrontmatter(page map[string]any, title string) string {
 	b.WriteString("url: ")
 	b.WriteString(url)
 	b.WriteString("\n")
+	if coverURL != "" {
+		b.WriteString("cover: ")
+		b.WriteString(escapeYAML(coverURL))
+		b.WriteString("\n")
+		if coverType != "" {
+			b.WriteString("cover_type: ")
+			b.WriteString(coverType)
+			b.WriteString("\n")
+		}
+		if coverExpiry != "" {
+			b.WriteString("cover_expiry_time: ")
+			b.WriteString(coverExpiry)
+			b.WriteString("\n")
+		}
+	}
 	if title != "" {
 		b.WriteString("title: ")
 		b.WriteString(escapeYAML(title))
@@ -112,6 +128,38 @@ func renderFrontmatter(page map[string]any, title string) string {
 	b.WriteString("---\n")
 
 	return b.String()
+}
+
+func extractCover(page map[string]any, assetHelper *assets.Helper) (string, string, string) {
+	if page == nil {
+		return "", "", ""
+	}
+	cover, ok := page["cover"].(map[string]any)
+	if !ok {
+		return "", "", ""
+	}
+
+	coverType, _ := cover["type"].(string)
+	url := extractFileURL(cover)
+	if url == "" {
+		return "", coverType, ""
+	}
+
+	if assetHelper != nil {
+		resolved, err := assetHelper.Resolve(url, "", true)
+		if err == nil && resolved != "" {
+			url = resolved
+		}
+	}
+
+	expiry := ""
+	if file, ok := cover["file"].(map[string]any); ok {
+		if value, ok := file["expiry_time"].(string); ok {
+			expiry = value
+		}
+	}
+
+	return url, coverType, expiry
 }
 
 func extractTitle(page map[string]any) string {

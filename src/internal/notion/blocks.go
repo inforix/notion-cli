@@ -30,6 +30,18 @@ func (c *Client) Search(ctx context.Context, payload []byte) (map[string]any, *h
 	return c.PostJSON(ctx, "/v1/search", payload)
 }
 
+func (c *Client) GetBlock(ctx context.Context, blockID string) (map[string]any, *http.Response, error) {
+	return c.GetJSON(ctx, "/v1/blocks/"+blockID)
+}
+
+func (c *Client) UpdateBlock(ctx context.Context, blockID string, payload []byte) (map[string]any, *http.Response, error) {
+	return c.PatchJSON(ctx, "/v1/blocks/"+blockID, payload)
+}
+
+func (c *Client) AppendBlockChildren(ctx context.Context, blockID string, payload []byte) (map[string]any, *http.Response, error) {
+	return c.PatchJSON(ctx, "/v1/blocks/"+blockID+"/children", payload)
+}
+
 func (c *Client) GetBlockTree(ctx context.Context, blockID string) ([]Block, error) {
 	blocks, err := c.getBlockChildrenAll(ctx, blockID)
 	if err != nil {

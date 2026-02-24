@@ -32,6 +32,10 @@ notion auth set --token YOUR_TOKEN
 ```
 notion pages export <page_id>
 notion search --body @query.json
+notion files create --body @file-upload.json
+notion files read <file_upload_id>
+notion files list --page-size 100
+notion files read --body @file.json --output ./downloads/
 ```
 
 ## Notes
